@@ -108,6 +108,38 @@
       details summary {
         padding-right: 0.5rem; /* Adjust space before the summary marker */
       }
+
+      /* --- CUSTOM ACCESSIBILITY CSS --- */
+      /* High Contrast (uses CSS filter for broad effect) */
+      .high-contrast {
+        filter: grayscale(100%) invert(100%) hue-rotate(180deg);
+      }
+
+      /* Font Size Adjustments */
+      body.a11y-text-md {
+        font-size: 1.125rem; /* Slightly Larger (~18px base) */
+      }
+      body.a11y-text-lg {
+        font-size: 1.25rem; /* Even Larger (~20px base) */
+      }
+
+      /* Make sure that elements relying on 'rem' or 'em' will scale relative to the body's font-size.
+         For maximum compatibility, you may need to manually increase font sizes for specific elements 
+         if they are defined using fixed 'px' or 'body.a11y-text-X-specific-element-size' classes.
+      */
+      body.a11y-text-md p,
+      body.a11y-text-md a,
+      body.a11y-text-md span,
+      body.a11y-text-md li {
+        font-size: 1.125rem !important;
+      }
+      body.a11y-text-lg p,
+      body.a11y-text-lg a,
+      body.a11y-text-lg span,
+      body.a11y-text-lg li {
+        font-size: 1.25rem !important;
+      }
+      /* --- END CUSTOM ACCESSIBILITY CSS --- */
     </style>
   </head>
   <body
@@ -115,7 +147,7 @@
   >
     <nav
       id="navbar"
-      class="fixed w-full z-50 py-3 px-6 lg:px-12 glass-nav text-brand-dark transition-all duration-300"
+      class="fixed w-full z-50 px-6 lg:px-12 glass-nav text-brand-dark transition-all duration-300"
     >
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-2 cursor-pointer z-50">
@@ -1009,21 +1041,59 @@
       </div>
     </footer>
 
-    <script>
-      (function (w, d, s, id) {
-        if (typeof w[id] !== "undefined") return;
-        w[id] = 1;
-        var n = d.createElement(s);
-        n.id = "AccessibilityWidget";
-        // מיקום: מרכז צד שמאל
-        n.setAttribute("data-color", "brand-accent");
-        n.setAttribute("data-pos", "left-middle");
-        n.setAttribute("data-size", "m");
-        // **שים לב: יש להחליף את המספר 39589 בקוד הלקוח שתקבל מספק השירות (נגישון)**
-        n.src = "https://cdn.a2z.co.il/embed/39589";
-        d.getElementsByTagName("head")[0].appendChild(n);
-      })(window, document, "script", "AccessibilityWidgetLoaded");
-    </script>
+    <div
+      id="a11y-widget"
+      class="fixed bottom-4 right-4 z-[100] flex flex-col gap-2"
+    >
+      <button
+        id="a11y-btn"
+        class="p-3 rounded-full bg-brand-primary text-white shadow-xl hover:bg-orange-600 transition-all border-2 border-white"
+        aria-label="פתח תפריט נגישות"
+      >
+        <i data-lucide="accessibility" class="w-6 h-6"></i>
+      </button>
+
+      <div
+        id="a11y-menu"
+        class="hidden flex-col gap-2 p-3 bg-white glass rounded-xl shadow-2xl border border-gray-100"
+      >
+        <button
+          id="a11y-contrast"
+          class="p-2 rounded-lg bg-gray-50 text-brand-dark hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm font-medium"
+          aria-label="שינוי ניגודיות גבוהה"
+        >
+          <i data-lucide="eye" class="w-4 h-4"></i>
+          <span>ניגודיות גבוהה</span>
+        </button>
+
+        <button
+          id="a11y-font-lg"
+          class="p-2 rounded-lg bg-gray-50 text-brand-dark hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm font-medium"
+          aria-label="הגדלת גופן"
+        >
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>הגדל גופן</span>
+        </button>
+
+        <button
+          id="a11y-font-sm"
+          class="p-2 rounded-lg bg-gray-50 text-brand-dark hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm font-medium"
+          aria-label="הקטנת גופן"
+        >
+          <i data-lucide="minus" class="w-4 h-4"></i>
+          <span>הקטן גופן</span>
+        </button>
+
+        <button
+          id="a11y-reset"
+          class="p-2 rounded-lg bg-brand-accent/10 text-brand-accent hover:bg-brand-accent/20 transition-colors flex items-center gap-2 text-sm font-medium mt-1"
+          aria-label="איפוס הגדרות נגישות"
+        >
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          <span>איפוס</span>
+        </button>
+      </div>
+    </div>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       lucide.createIcons();
@@ -1100,6 +1170,99 @@
           counted = true;
         }
       });
+
+      // --- CUSTOM ACCESSIBILITY WIDGET JS ---
+
+      const body = document.body;
+      const a11yBtn = document.getElementById("a11y-btn");
+      const a11yMenu = document.getElementById("a11y-menu");
+      const a11yContrast = document.getElementById("a11y-contrast");
+      const a11yFontSm = document.getElementById("a11y-font-sm");
+      const a11yFontLg = document.getElementById("a11y-font-lg");
+      const a11yReset = document.getElementById("a11y-reset");
+
+      // Classes for font size - must match the CSS
+      const FONT_CLASSES = ["a11y-text-md", "a11y-text-lg"];
+      const CONTRAST_CLASS = "high-contrast";
+
+      // Initial setup on load - apply saved settings
+      const loadSettings = () => {
+        // Load Contrast
+        if (localStorage.getItem("a11y-contrast") === "true") {
+          body.classList.add(CONTRAST_CLASS);
+        }
+
+        // Load Font Size
+        const fontSize = localStorage.getItem("a11y-font-size");
+        if (fontSize && FONT_CLASSES.includes(fontSize)) {
+          body.classList.add(fontSize);
+        }
+      };
+
+      // Function to manage font size state
+      const updateFont = (newSizeClass) => {
+        // Remove existing font size classes
+        FONT_CLASSES.forEach((c) => body.classList.remove(c));
+
+        if (newSizeClass) {
+          body.classList.add(newSizeClass);
+          localStorage.setItem("a11y-font-size", newSizeClass);
+        } else {
+          // Default size
+          localStorage.removeItem("a11y-font-size");
+        }
+      };
+
+      // Event Listeners
+      a11yBtn.addEventListener("click", () => {
+        a11yMenu.classList.toggle("hidden");
+        lucide.createIcons(); // Re-render Lucide icons in the menu
+      });
+
+      a11yContrast.addEventListener("click", () => {
+        const isHighContrast = body.classList.toggle(CONTRAST_CLASS);
+        localStorage.setItem("a11y-contrast", isHighContrast);
+      });
+
+      a11yFontLg.addEventListener("click", () => {
+        let currentSize = localStorage.getItem("a11y-font-size");
+        let newSize = ""; // Default
+
+        if (!currentSize) {
+          newSize = "a11y-text-md";
+        } else if (currentSize === "a11y-text-md") {
+          newSize = "a11y-text-lg";
+        } else if (currentSize === "a11y-text-lg") {
+          newSize = "a11y-text-lg"; // Max size
+        }
+        updateFont(newSize);
+      });
+
+      a11yFontSm.addEventListener("click", () => {
+        let currentSize = localStorage.getItem("a11y-font-size");
+        let newSize = ""; // Default
+
+        if (currentSize === "a11y-text-lg") {
+          newSize = "a11y-text-md";
+        } else if (currentSize === "a11y-text-md") {
+          newSize = ""; // Go back to default
+        } else if (!currentSize) {
+          newSize = ""; // Min size
+        }
+        updateFont(newSize);
+      });
+
+      a11yReset.addEventListener("click", () => {
+        body.classList.remove(CONTRAST_CLASS);
+        FONT_CLASSES.forEach((c) => body.classList.remove(c));
+        localStorage.removeItem("a11y-contrast");
+        localStorage.removeItem("a11y-font-size");
+        a11yMenu.classList.add("hidden");
+      });
+
+      loadSettings();
+
+      // --- END CUSTOM ACCESSIBILITY WIDGET JS ---
     </script>
   </body>
 </html>

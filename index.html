@@ -33,11 +33,16 @@
             },
             animation: {
               scroll: "scroll 40s linear infinite",
+              "fade-in": "fadeIn 0.3s ease-out forwards",
             },
             keyframes: {
               scroll: {
                 "0%": { transform: "translateX(0)" },
                 "100%": { transform: "translateX(50%)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0", transform: "scale(0.95)" },
+                "100%": { opacity: "1", transform: "scale(1)" },
               },
             },
           },
@@ -74,7 +79,7 @@
         box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
       }
 
-      /* Navbar Glass - Updated to White Transparent ALWAYS */
+      /* Navbar Glass */
       .glass-nav {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(20px);
@@ -99,34 +104,45 @@
         pointer-events: auto;
       }
 
-      /* Animation for Icon Swap */
-      #mobile-menu-btn i {
-        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      /* Modal Styling */
+      .modal-backdrop {
+        background-color: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+      }
+
+      /* רכב משלוחים - הדמיית לוגו */
+      .van-container {
+        position: relative;
+        overflow: hidden;
+      }
+      .van-logo-overlay {
+        position: absolute;
+        top: 45%;
+        left: 30%; /* מיקום מותאם לרכב פרטי */
+        width: 25%;
+        opacity: 0.9;
+        mix-blend-mode: multiply; /* משתלב עם הצללים של הרכב */
+        transform: rotate(-1deg); /* הטיה קלה בהתאם לזווית הרכב */
       }
 
       /* Fix for details/summary padding in RTL */
       details summary {
-        padding-right: 0.5rem; /* Adjust space before the summary marker */
+        padding-right: 0.5rem;
       }
 
-      /* --- CUSTOM ACCESSIBILITY CSS --- */
-      /* High Contrast (uses CSS filter for broad effect) */
+      /* Accessibility High Contrast */
       .high-contrast {
         filter: grayscale(100%) invert(100%) hue-rotate(180deg);
       }
 
       /* Font Size Adjustments */
       body.a11y-text-md {
-        font-size: 1.125rem; /* Slightly Larger (~18px base) */
+        font-size: 1.125rem;
       }
       body.a11y-text-lg {
-        font-size: 1.25rem; /* Even Larger (~20px base) */
+        font-size: 1.25rem;
       }
 
-      /* Make sure that elements relying on 'rem' or 'em' will scale relative to the body's font-size.
-         For maximum compatibility, you may need to manually increase font sizes for specific elements 
-         if they are defined using fixed 'px' or 'body.a11y-text-X-specific-element-size' classes.
-      */
       body.a11y-text-md p,
       body.a11y-text-md a,
       body.a11y-text-md span,
@@ -139,7 +155,6 @@
       body.a11y-text-lg li {
         font-size: 1.25rem !important;
       }
-      /* --- END CUSTOM ACCESSIBILITY CSS --- */
     </style>
   </head>
   <body
@@ -233,11 +248,6 @@
           class="text-xl font-medium mobile-link text-brand-dark hover:text-brand-primary"
           >צור קשר</a
         >
-        <a
-          href="#accessibility-statement"
-          class="text-xl font-medium mobile-link text-brand-dark hover:text-brand-primary"
-          >הצהרת נגישות</a
-        >
       </div>
     </nav>
 
@@ -314,11 +324,15 @@
             <div
               class="absolute -inset-4 bg-brand-primary/20 rounded-3xl blur-2xl"
             ></div>
-            <img
-              src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-              alt="שליח עם חבילה ברחוב"
-              class="relative rounded-2xl shadow-2xl border border-gray-200 w-full object-cover h-[400px]"
-            />
+            <div
+              class="van-container relative rounded-2xl shadow-2xl border border-gray-200 w-full h-[400px]"
+            >
+              <img
+                src="assets/delivery-car.png"
+                alt="רכב משלוחים פרטי של החברה"
+                class="w-full h-full object-cover"
+              />
+            </div>
           </div>
 
           <div data-aos="fade-left" class="lg:w-1/2">
@@ -373,31 +387,118 @@
               <i data-lucide="package" class="w-7 h-7 text-brand-primary"></i>
               <h4 class="text-xl font-bold text-gray-900">עד 15 ק"ג</h4>
             </div>
-            <div class="grid grid-cols-2 gap-y-2 text-sm">
-              <div class="font-medium text-gray-700">ירושלים:</div>
-              <div class="font-bold text-gray-900 text-right">
-                30 ₪ - 50 ₪
-                <span class="text-xs text-gray-500 block"
-                  >(תלוי גודל ומשקל)</span
+            <div class="grid grid-cols-2 gap-y-4 text-sm">
+              <div>
+                <div class="font-medium text-gray-800 text-base">ירושלים:</div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
                 >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
               </div>
-              <div class="font-medium text-gray-700">מעלה אדומים:</div>
-              <div class="font-bold text-gray-900 text-right">50 ₪ - 70 ₪</div>
-              <div class="font-medium text-gray-700">מבשרת ציון:</div>
-              <div class="font-bold text-gray-900 text-right">50 ₪ - 70 ₪</div>
-              <div class="font-medium text-gray-700">בית שמש:</div>
-              <div class="font-bold text-gray-900 text-right">
+              <div class="font-bold text-gray-900 text-right text-lg">
                 50 ₪ - 70 ₪
-                <span class="text-xs text-gray-500 block"
+                <span class="text-xs text-gray-500 block font-normal"
                   >(תלוי גודל ומשקל)</span
                 >
               </div>
-              <div class="font-medium text-gray-700">איזור המרכז:</div>
-              <div class="font-bold text-brand-accent text-right">80 ₪</div>
-              <div class="font-medium text-gray-700">צפון הארץ:</div>
-              <div class="font-bold text-brand-accent text-right">
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  מעלה אדומים:
+                </div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">
+                50 ₪ - 70 ₪
+                <span class="text-xs text-gray-500 block font-normal"
+                  >(תלוי גודל ומשקל)</span
+                >
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  מבשרת ציון:
+                </div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">
+                50 ₪ - 70 ₪
+                <span class="text-xs text-gray-500 block font-normal"
+                  >(תלוי גודל ומשקל)</span
+                >
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">בית שמש:</div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">
+                50 ₪ - 70 ₪
+                <span class="text-xs text-gray-500 block font-normal"
+                  >(תלוי גודל ומשקל)</span
+                >
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  איזור המרכז:
+                </div>
+                <div
+                  class="text-xs text-gray-500 font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="calendar" class="w-3 h-3"></i> עד 7 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-brand-accent text-right text-lg">
                 80 ₪ - 100 ₪
-                <span class="text-xs text-gray-500 block"
+                <span class="text-xs text-gray-500 block font-normal"
+                  >(תלוי גודל ומשקל)</span
+                >
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  צפון הארץ:
+                </div>
+                <div
+                  class="text-xs text-gray-500 font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="calendar" class="w-3 h-3"></i> עד 7 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-brand-accent text-right text-lg">
+                80 ₪ - 100 ₪
+                <span class="text-xs text-gray-500 block font-normal"
+                  >(תלוי גודל ומשקל)</span
+                >
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  דרום הארץ:
+                </div>
+                <div
+                  class="text-xs text-gray-500 font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="calendar" class="w-3 h-3"></i> עד 7 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-brand-accent text-right text-lg">
+                80 ₪ - 100 ₪
+                <span class="text-xs text-gray-500 block font-normal"
                   >(תלוי גודל ומשקל)</span
                 >
               </div>
@@ -415,21 +516,97 @@
               <i data-lucide="truck" class="w-7 h-7 text-brand-accent"></i>
               <h4 class="text-xl font-bold text-gray-900">15 ק"ג - 25 ק"ג</h4>
             </div>
-            <div class="grid grid-cols-2 gap-y-2 text-sm">
-              <div class="font-medium text-gray-700">ירושלים:</div>
-              <div class="font-bold text-gray-900 text-right">70 ₪</div>
-              <div class="font-medium text-gray-700">בית שמש:</div>
-              <div class="font-bold text-gray-900 text-right">90 ₪</div>
-              <div class="font-medium text-gray-700">מעלה אדומים:</div>
-              <div class="font-bold text-gray-900 text-right">90 ₪</div>
-              <div class="font-medium text-gray-700">מבשרת ציון:</div>
-              <div class="font-bold text-gray-900 text-right">90 ₪</div>
-              <div class="font-medium text-gray-700">איזור המרכז:</div>
-              <div class="font-bold text-brand-primary text-right">120 ₪</div>
-              <div class="font-medium text-gray-700">צפון הארץ:</div>
-              <div class="font-bold text-brand-primary text-right">150 ₪</div>
-              <div class="font-medium text-gray-700">דרום הארץ:</div>
-              <div class="font-bold text-brand-primary text-right">150 ₪</div>
+            <div class="grid grid-cols-2 gap-y-4 text-sm">
+              <div>
+                <div class="font-medium text-gray-800 text-base">ירושלים:</div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">
+                70 ₪ - 90 ₪
+                <span class="text-xs text-gray-500 block font-normal"
+                  >(תלוי גודל ומשקל)</span
+                >
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">בית שמש:</div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">90 ₪</div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  מעלה אדומים:
+                </div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">90 ₪</div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  מבשרת ציון:
+                </div>
+                <div
+                  class="text-xs text-brand-primary font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="clock" class="w-3 h-3"></i> עד 3 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-gray-900 text-right text-lg">90 ₪</div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  איזור המרכז:
+                </div>
+                <div
+                  class="text-xs text-gray-500 font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="calendar" class="w-3 h-3"></i> עד 7 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-brand-primary text-right text-lg">
+                120 ₪
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  צפון הארץ:
+                </div>
+                <div
+                  class="text-xs text-gray-500 font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="calendar" class="w-3 h-3"></i> עד 7 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-brand-primary text-right text-lg">
+                150 ₪
+              </div>
+
+              <div>
+                <div class="font-medium text-gray-800 text-base">
+                  דרום הארץ:
+                </div>
+                <div
+                  class="text-xs text-gray-500 font-medium flex items-center gap-1"
+                >
+                  <i data-lucide="calendar" class="w-3 h-3"></i> עד 7 ימי עסקים
+                </div>
+              </div>
+              <div class="font-bold text-brand-primary text-right text-lg">
+                150 ₪
+              </div>
             </div>
           </div>
         </div>
@@ -463,14 +640,14 @@
 
           <div class="py-4">
             <div class="text-5xl font-black text-gray-900 mb-2">
-              <span class="counter" data-target="12000">0</span>+
+              <span class="counter" data-target="350">0</span>+
             </div>
             <p class="text-gray-600 font-medium">משלוחים שהועברו בהצלחה</p>
           </div>
 
           <div class="py-4">
             <div class="text-5xl font-black text-brand-accent mb-2">
-              <span class="counter" data-target="350">0</span>+
+              <span class="counter" data-target="120">0</span>+
             </div>
             <p class="text-gray-600 font-medium">לקוחות עסקיים מרוצים</p>
           </div>
@@ -511,12 +688,12 @@
           </p>
           <div class="flex items-center gap-3 mt-auto">
             <div
-              class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-700"
+              class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-700"
             >
-              ד
+              ח
             </div>
             <div>
-              <p class="font-bold text-sm text-gray-900">דניאל כהן</p>
+              <p class="font-bold text-sm text-gray-900">חנן שבת</p>
             </div>
           </div>
         </div>
@@ -536,10 +713,10 @@
             <div
               class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700"
             >
-              מ
+              ט
             </div>
             <div>
-              <p class="font-bold text-sm text-gray-900">מיכל לוי</p>
+              <p class="font-bold text-sm text-gray-900">טל יעקב</p>
             </div>
           </div>
         </div>
@@ -560,81 +737,10 @@
             <div
               class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-700"
             >
-              י
-            </div>
-            <div>
-              <p class="font-bold text-sm text-gray-900">יוסי אברהמי</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="w-[350px] glass p-6 rounded-2xl flex flex-col gap-4">
-          <div class="flex text-yellow-400">
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed">
-            "השירות הכי מהיר שקיבלתי בירושלים. השליח הגיע בדיוק בזמן, היה אדיב
-            מאוד והחבילה נמסרה תוך שעתיים."
-          </p>
-          <div class="flex items-center gap-3 mt-auto">
-            <div
-              class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-700"
-            >
-              ד
-            </div>
-            <div>
-              <p class="font-bold text-sm text-gray-900">דניאל כהן</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="w-[350px] glass p-6 rounded-2xl flex flex-col gap-4">
-          <div class="flex text-yellow-400">
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed">
-            "שקט נפשי אמיתי. הממשק נוח והזמינות בטלפון מדהימה. כיף לעבוד מולם."
-          </p>
-          <div class="flex items-center gap-3 mt-auto">
-            <div
-              class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700"
-            >
               מ
             </div>
             <div>
-              <p class="font-bold text-sm text-gray-900">מיכל לוי</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="w-[350px] glass p-6 rounded-2xl flex flex-col gap-4">
-          <div class="flex text-yellow-400">
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-            <i data-lucide="star" class="fill-current w-4 h-4"></i>
-          </div>
-          <p class="text-gray-700 text-sm leading-relaxed">
-            "הצילו אותי עם משלוח דחוף למעלה אדומים ביום שישי בצהריים. אין
-            עליכם!"
-          </p>
-          <div class="flex items-center gap-3 mt-auto">
-            <div
-              class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center font-bold text-purple-700"
-            >
-              י
-            </div>
-            <div>
-              <p class="font-bold text-sm text-gray-900">יוסי אברהמי</p>
+              <p class="font-bold text-sm text-gray-900">מושיקו לוי</p>
             </div>
           </div>
         </div>
@@ -719,17 +825,17 @@
           </div>
 
           <form
-            action="https://formsubmit.co/YOUR_EMAIL@company.com"
-            method="POST"
+            id="contact-form"
+            data-form-action="https://api.web3forms.com/submit"
             class="space-y-6"
           >
-            <input type="text" name="_honey" style="display: none" />
-            <input type="hidden" name="_captcha" value="false" />
             <input
               type="hidden"
-              name="_next"
-              value="https://yourwebsite.com/thanks.html"
+              name="access_key"
+              value="4a8f707d-ef6d-48d8-800a-cac845bfed80"
             />
+            <input type="text" name="_honey" style="display: none" />
+            <input type="hidden" name="_captcha" value="false" />
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -775,12 +881,14 @@
               <textarea
                 name="message"
                 rows="4"
+                required
                 class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none transition-all"
               ></textarea>
             </div>
 
             <button
               type="submit"
+              id="submit-btn"
               class="w-full bg-brand-primary hover:bg-orange-600 text-white font-bold py-4 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2 group"
             >
               <span>שלח פנייה</span>
@@ -794,137 +902,14 @@
       </div>
     </section>
 
-    <section id="accessibility-statement" class="py-24 bg-white">
-      <div class="container mx-auto px-6 max-w-4xl">
-        <div class="text-center mb-12">
-          <h3 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-            הצהרת נגישות
-          </h3>
-        </div>
-
-        <div class="space-y-4">
-          <details
-            class="group bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
-            data-aos="fade-up"
-          >
-            <summary
-              class="flex items-center justify-between p-5 cursor-pointer list-none bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200"
-            >
-              <span
-                class="font-bold text-lg text-brand-dark flex items-center gap-3"
-              >
-                <i
-                  data-lucide="check-circle"
-                  class="w-5 h-5 text-brand-primary"
-                ></i>
-                מחויבות לנגישות
-              </span>
-              <i
-                data-lucide="chevron-down"
-                class="w-5 h-5 text-gray-600 transition-transform duration-300 group-open:rotate-180"
-              ></i>
-            </summary>
-            <div class="p-5 text-gray-700 leading-relaxed text-base">
-              <p>
-                חברת <strong>Click&Collect</strong> מחויבת להנגשת שירותיה ואתריה
-                האינטרנטיים לאנשים עם מוגבלויות, מתוך אמונה כי לכל אדם זכות שווה
-                לשימוש במידע ושירותים. האתר נבנה ומופעל בהתאם להוראות חוק שוויון
-                זכויות לאנשים עם מוגבלות (התשנ"ח-1998) ותקנותיו.
-              </p>
-            </div>
-          </details>
-
-          <details
-            class="group bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <summary
-              class="flex items-center justify-between p-5 cursor-pointer list-none bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200"
-            >
-              <span
-                class="font-bold text-lg text-brand-dark flex items-center gap-3"
-              >
-                <i data-lucide="award" class="w-5 h-5 text-brand-primary"></i>
-                עמידה בתקן ורכיב נגישות
-              </span>
-              <i
-                data-lucide="chevron-down"
-                class="w-5 h-5 text-gray-600 transition-transform duration-300 group-open:rotate-180"
-              ></i>
-            </summary>
-            <div class="p-5 text-gray-700 leading-relaxed text-base">
-              <p>
-                האתר עומד בדרישות הנגישות לרמה <strong>AA</strong> של תקן
-                <strong>WCAG 2.0</strong>. הנגישות בוצעה, בין השאר, באמצעות
-                הטמעת רכיב חיצוני (נגישון) המאפשר:
-              </p>
-              <ul class="list-disc list-inside space-y-1 mt-3 pr-4 text-sm">
-                <li>התאמת גודל גופן</li>
-                <li>שינוי ניגודיות צבעים</li>
-                <li>הגדלת סמן העכבר</li>
-                <li>הדגשת קישורים</li>
-                <li>חסימת אנימציות</li>
-                <li>התאמה למקלדת בלבד</li>
-              </ul>
-            </div>
-          </details>
-
-          <details
-            class="group bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            <summary
-              class="flex items-center justify-between p-5 cursor-pointer list-none bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200"
-            >
-              <span
-                class="font-bold text-lg text-brand-dark flex items-center gap-3"
-              >
-                <i
-                  data-lucide="headphones"
-                  class="w-5 h-5 text-brand-primary"
-                ></i>
-                דרכי פנייה ורכז נגישות
-              </span>
-              <i
-                data-lucide="chevron-down"
-                class="w-5 h-5 text-gray-600 transition-transform duration-300 group-open:rotate-180"
-              ></i>
-            </summary>
-            <div class="p-5 text-gray-700 leading-relaxed text-base">
-              <p class="mb-3">
-                למרות מאמצינו להנגיש את כל חלקי האתר, ייתכן שנפלו טעויות. אם
-                נתקלתם בקושי כלשהו בגלישה באתר או בשימוש ברכיב הנגישות, ניתן
-                ליצור קשר עם רכז הנגישות שלנו:
-              </p>
-              <ul
-                class="space-y-2 text-base font-medium p-4 rounded-lg bg-gray-100"
-              >
-                <li class="flex items-center gap-2">
-                  <i data-lucide="user" class="w-4 h-4 text-brand-accent"></i>
-                  <span>שם: יוני (רכז נגישות)</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <i data-lucide="phone" class="w-4 h-4 text-brand-accent"></i>
-                  <span>טלפון: 051-524-9900</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <i data-lucide="mail" class="w-4 h-4 text-brand-accent"></i>
-                  <span>דוא"ל: yoni6508@gmail.com</span>
-                </li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
     <footer class="bg-brand-dark py-8 text-gray-300">
       <div class="container mx-auto px-6 max-w-7xl">
         <div
-          class="flex flex-col lg:flex-row items-start text-center lg:text-right pb-8 border-b border-gray-700/50 mb-6 gap-8"
+          class="flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-right pb-8 border-b border-gray-700/50 mb-6 gap-8"
         >
-          <div class="space-y-2 flex-1 flex flex-col items-center lg:items-end">
+          <div
+            class="space-y-2 flex-1 flex flex-col items-center lg:items-end w-full"
+          >
             <div class="flex justify-center lg:justify-end">
               <img
                 src="assets/logo.png"
@@ -935,29 +920,37 @@
             <div
               class="space-y-1 text-sm flex flex-col items-center lg:items-end pt-2"
             >
-              <p class="flex items-center gap-2 lg:flex-row-reverse">
+              <p
+                class="flex items-center gap-2 flex-row-reverse lg:flex-row-reverse"
+              >
                 <i data-lucide="phone" class="w-4 h-4 text-brand-primary"></i>
                 <span>051-524-9900</span>
               </p>
-              <p class="flex items-center gap-2 lg:flex-row-reverse">
+              <p
+                class="flex items-center gap-2 flex-row-reverse lg:flex-row-reverse"
+              >
                 <i data-lucide="mail" class="w-4 h-4 text-brand-primary"></i>
-                <span>yoni6508@gmail.com</span>
+                <span>clickac2025@gmail.com</span>
               </p>
-              <p class="flex items-center gap-2 lg:flex-row-reverse">
+              <p
+                class="flex items-center gap-2 flex-row-reverse lg:flex-row-reverse"
+              >
                 <i data-lucide="map-pin" class="w-4 h-4 text-brand-primary"></i>
                 <span>ירושלים, ישראל</span>
               </p>
             </div>
           </div>
 
-          <div class="space-y-2 flex-1 flex flex-col items-center lg:items-end">
+          <div
+            class="space-y-2 flex-1 flex flex-col items-center lg:items-end w-full"
+          >
             <h4
-              class="text-base font-semibold text-white mb-2 border-r-2 border-brand-primary pr-2 inline-block"
+              class="text-base font-semibold text-white mb-2 border-r-0 lg:border-r-2 border-brand-primary px-2 inline-block"
             >
               ניווט מהיר
             </h4>
             <ul
-              class="space-y-1 text-sm flex flex-col items-center lg:items-end"
+              class="space-y-1 text-sm flex flex-col items-center lg:items-start"
             >
               <li>
                 <a
@@ -988,23 +981,21 @@
                 >
               </li>
               <li>
-                <a href="#" class="hover:text-brand-primary transition-colors"
-                  >תקנון ושירות</a
-                >
-              </li>
-              <li>
                 <a
-                  href="#accessibility-statement"
+                  href="javascript:void(0)"
+                  id="terms-trigger"
                   class="hover:text-brand-primary transition-colors"
-                  >הצהרת נגישות</a
+                  >תקנון ושירות</a
                 >
               </li>
             </ul>
           </div>
 
-          <div class="space-y-2 flex-1 flex flex-col items-center lg:items-end">
+          <div
+            class="space-y-2 flex-1 flex flex-col items-center lg:items-end w-full"
+          >
             <h4
-              class="text-base font-semibold text-white mb-2 border-r-2 border-brand-primary pr-2 inline-block"
+              class="text-base font-semibold text-white mb-2 border-r-0 lg:border-r-2 border-brand-primary px-2 inline-block"
             >
               עקבו אחרינו
             </h4>
@@ -1042,8 +1033,156 @@
     </footer>
 
     <div
+      id="terms-modal"
+      class="fixed inset-0 z-[100] hidden"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        id="terms-backdrop"
+        class="fixed inset-0 modal-backdrop transition-opacity opacity-0"
+      ></div>
+
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center sm:p-0"
+        >
+          <div
+            id="terms-panel"
+            class="relative transform overflow-hidden rounded-2xl bg-white text-right shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl border border-gray-200 opacity-0 scale-95 translate-y-4"
+          >
+            <div
+              class="bg-gray-50 px-4 py-4 sm:px-6 flex justify-between items-center border-b border-gray-200"
+            >
+              <h3
+                class="text-xl font-bold leading-6 text-brand-dark"
+                id="modal-title"
+              >
+                תקנון ואמנת שירות
+              </h3>
+              <button
+                id="close-terms"
+                class="text-gray-400 hover:text-gray-500 transition-colors p-1 rounded-full hover:bg-gray-200"
+              >
+                <i data-lucide="x" class="w-6 h-6"></i>
+              </button>
+            </div>
+
+            <div
+              class="px-4 py-6 sm:p-6 max-h-[70vh] overflow-y-auto text-gray-700 leading-relaxed text-sm sm:text-base space-y-6"
+            >
+              <section>
+                <h4 class="font-bold text-brand-primary text-lg mb-2">
+                  1. הגדרות
+                </h4>
+                <ul class="list-disc list-inside space-y-1">
+                  <li><strong>"החברה":</strong> חברת השליחויות.</li>
+                  <li><strong>"הלקוח":</strong> מזמין השירות.</li>
+                  <li><strong>"השליח":</strong> נציג החברה.</li>
+                  <li><strong>"המשלוח":</strong> החבילה/מסמך המועבר.</li>
+                </ul>
+              </section>
+
+              <section>
+                <h4 class="font-bold text-brand-primary text-lg mb-2">
+                  2. אחריות הלקוח
+                </h4>
+                <div class="space-y-2">
+                  <p>
+                    <strong>אריזה:</strong> הלקוח אחראי לארוז את המשלוח כראוי.
+                    יש לארוז פריטים שבירים בבידוד מתאים (כגון "פצפצים") ולסמן
+                    "שביר". אסור לאגד חבילות יחד.
+                  </p>
+                  <p>
+                    <strong>תוכן:</strong> אין לשלוח חפצי ערך יקרים (תכשיטים,
+                    מזומן, המחאות) ללא אישור מיוחד. אין לשלוח חומרים אסורים
+                    (נשק, חומרים מסוכנים, ביולוגיים, כימיים).
+                  </p>
+                  <p>
+                    <strong>פרטי משלוח:</strong> הלקוח אחראי לנכונות הכתובות
+                    ושעות קבלת/מסירת המשלוח.
+                  </p>
+                </div>
+              </section>
+
+              <section>
+                <h4 class="font-bold text-brand-primary text-lg mb-2">
+                  3. אחריות החברה
+                </h4>
+                <div class="space-y-2">
+                  <p>
+                    <strong>שמירה:</strong> החברה תעשה כמיטב יכולתה לשמור על
+                    המשלוח, אך היא אינה אחראית לנזקים ישירים או עקיפים שנגרמו
+                    כתוצאה ממחדל השליח (אלא אם נקבע אחרת בהסכם), איחור או אי
+                    הגעה, או נזק לצד ג'.
+                  </p>
+                  <p>
+                    <strong>זמן אספקה:</strong> החברה תעשה כל מאמץ לעמוד בזמני
+                    האספקה המצוינים (ראה זמני אספקה המפורטים), אך אינה מתחייבת
+                    לכך, וזמנים אלו עשויים להתארך.
+                  </p>
+                </div>
+              </section>
+
+              <section>
+                <h4 class="font-bold text-brand-primary text-lg mb-2">
+                  4. תנאים כלליים
+                </h4>
+                <ul class="space-y-2 list-disc list-inside">
+                  <li>
+                    <strong>כוח עליון:</strong> החברה פטורה מאחריות במקרים של
+                    כוח עליון (מגפה, מצב חירום ביטחוני, תקלות תשתית, שביתות).
+                  </li>
+                  <li>
+                    <strong>הגבלת אחריות:</strong> במקרה של נזק למשלוח, תוגבל
+                    האחריות לסכום מקסימלי שיוגדר מראש בהסכם, או על פי דין,
+                    וייתכן שיידרש ביטוח נפרד על ידי הלקוח.
+                  </li>
+                  <li>
+                    <strong>תלונות:</strong> כל טענה או תביעה חייבת להיות מוגשת
+                    בכתב תוך פרק זמן מוגבל (למשל, שנה) מיום האירוע.
+                  </li>
+                  <li>
+                    <strong>שימוש בפלטפורמה/קוד סודי:</strong> הלקוח אחראי לכל
+                    הזמנה שנעשתה בשמו ו/או בשימוש בקוד הסודי שלו. ויתור על טענות
+                    מול החברה עשוי להיות כרוך בתשלום תחילה.
+                  </li>
+                  <li>
+                    <strong>תחום שיפוט:</strong> תחומי השיפוט להסכם הם בישראל.
+                  </li>
+                </ul>
+              </section>
+            </div>
+
+            <div
+              class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-200"
+            >
+              <button
+                id="close-terms-btn"
+                type="button"
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors"
+              >
+                סגור
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="submission-toast"
+      class="fixed bottom-4 right-4 z-[100] p-4 rounded-xl shadow-2xl bg-green-600 text-white transition-all duration-300 opacity-0 translate-y-4 pointer-events-none flex items-center gap-3"
+      role="alert"
+      aria-live="assertive"
+    >
+      <i data-lucide="check-circle" class="w-6 h-6"></i>
+      <span>ההודעה נשלחה בהצלחה! ניצור קשר בהקדם.</span>
+    </div>
+
+    <div
       id="a11y-widget"
-      class="fixed bottom-4 right-4 z-[100] flex flex-col gap-2"
+      class="fixed bottom-4 right-4 z-[90] flex flex-col gap-2"
     >
       <button
         id="a11y-btn"
@@ -1105,14 +1244,11 @@
       const mobileLinks = document.querySelectorAll(".mobile-link");
       const menuIconContainer = document.getElementById("mobile-menu-btn");
 
-      // Define function to swap the icon
       const swapIcon = (isOpen) => {
-        // Lucide doesn't animate naturally on change, so we swap the icon HTML
         const iconName = isOpen ? "x" : "menu";
         menuIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-8 h-8 transition-transform duration-300 ${
           isOpen ? "rotate-90" : "rotate-0"
         }"></i>`;
-        // Re-render Lucide icons for the new HTML
         lucide.createIcons();
       };
 
@@ -1122,11 +1258,11 @@
         if (isOpen) {
           mobileMenu.classList.remove("menu-hidden");
           mobileMenu.classList.add("menu-visible");
-          swapIcon(true); // Open -> show X
+          swapIcon(true);
         } else {
           mobileMenu.classList.remove("menu-visible");
           mobileMenu.classList.add("menu-hidden");
-          swapIcon(false); // Close -> show Menu
+          swapIcon(false);
         }
       });
 
@@ -1134,7 +1270,7 @@
         link.addEventListener("click", () => {
           mobileMenu.classList.remove("menu-visible");
           mobileMenu.classList.add("menu-hidden");
-          swapIcon(false); // Close -> show Menu
+          swapIcon(false);
         });
       });
 
@@ -1172,7 +1308,6 @@
       });
 
       // --- CUSTOM ACCESSIBILITY WIDGET JS ---
-
       const body = document.body;
       const a11yBtn = document.getElementById("a11y-btn");
       const a11yMenu = document.getElementById("a11y-menu");
@@ -1181,42 +1316,33 @@
       const a11yFontLg = document.getElementById("a11y-font-lg");
       const a11yReset = document.getElementById("a11y-reset");
 
-      // Classes for font size - must match the CSS
       const FONT_CLASSES = ["a11y-text-md", "a11y-text-lg"];
       const CONTRAST_CLASS = "high-contrast";
 
-      // Initial setup on load - apply saved settings
       const loadSettings = () => {
-        // Load Contrast
         if (localStorage.getItem("a11y-contrast") === "true") {
           body.classList.add(CONTRAST_CLASS);
         }
-
-        // Load Font Size
         const fontSize = localStorage.getItem("a11y-font-size");
         if (fontSize && FONT_CLASSES.includes(fontSize)) {
           body.classList.add(fontSize);
         }
       };
 
-      // Function to manage font size state
       const updateFont = (newSizeClass) => {
-        // Remove existing font size classes
         FONT_CLASSES.forEach((c) => body.classList.remove(c));
 
         if (newSizeClass) {
           body.classList.add(newSizeClass);
           localStorage.setItem("a11y-font-size", newSizeClass);
         } else {
-          // Default size
           localStorage.removeItem("a11y-font-size");
         }
       };
 
-      // Event Listeners
       a11yBtn.addEventListener("click", () => {
         a11yMenu.classList.toggle("hidden");
-        lucide.createIcons(); // Re-render Lucide icons in the menu
+        lucide.createIcons();
       });
 
       a11yContrast.addEventListener("click", () => {
@@ -1226,28 +1352,28 @@
 
       a11yFontLg.addEventListener("click", () => {
         let currentSize = localStorage.getItem("a11y-font-size");
-        let newSize = ""; // Default
+        let newSize = "";
 
         if (!currentSize) {
           newSize = "a11y-text-md";
         } else if (currentSize === "a11y-text-md") {
           newSize = "a11y-text-lg";
         } else if (currentSize === "a11y-text-lg") {
-          newSize = "a11y-text-lg"; // Max size
+          newSize = "a11y-text-lg";
         }
         updateFont(newSize);
       });
 
       a11yFontSm.addEventListener("click", () => {
         let currentSize = localStorage.getItem("a11y-font-size");
-        let newSize = ""; // Default
+        let newSize = "";
 
         if (currentSize === "a11y-text-lg") {
           newSize = "a11y-text-md";
         } else if (currentSize === "a11y-text-md") {
-          newSize = ""; // Go back to default
+          newSize = "";
         } else if (!currentSize) {
-          newSize = ""; // Min size
+          newSize = "";
         }
         updateFont(newSize);
       });
@@ -1262,7 +1388,133 @@
 
       loadSettings();
 
-      // --- END CUSTOM ACCESSIBILITY WIDGET JS ---
+      // --- TERMS MODAL LOGIC (Unchanged) ---
+      const termsModal = document.getElementById("terms-modal");
+      const termsTrigger = document.getElementById("terms-trigger");
+      const closeTermsBtn = document.getElementById("close-terms");
+      const closeTermsFooterBtn = document.getElementById("close-terms-btn");
+      const termsBackdrop = document.getElementById("terms-backdrop");
+      const termsPanel = document.getElementById("terms-panel");
+
+      const openModal = () => {
+        termsModal.classList.remove("hidden");
+        // Small delay for animation
+        setTimeout(() => {
+          termsBackdrop.classList.remove("opacity-0");
+          termsPanel.classList.remove("opacity-0", "scale-95", "translate-y-4");
+        }, 10);
+      };
+
+      const closeModal = () => {
+        termsBackdrop.classList.add("opacity-0");
+        termsPanel.classList.add("opacity-0", "scale-95", "translate-y-4");
+
+        // Wait for animation to finish
+        setTimeout(() => {
+          termsModal.classList.add("hidden");
+        }, 300);
+      };
+
+      termsTrigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal();
+      });
+
+      closeTermsBtn.addEventListener("click", closeModal);
+      closeTermsFooterBtn.addEventListener("click", closeModal);
+
+      // Click outside to close
+      termsModal.addEventListener("click", (e) => {
+        if (e.target === termsPanel.parentNode) {
+          closeModal();
+        }
+      });
+
+      // Escape key to close
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !termsModal.classList.contains("hidden")) {
+          closeModal();
+        }
+      });
+
+      // --- לוגיקת טופס צור קשר (AJAX ו-Toast) - מעודכן ל-Web3Forms ---
+      const contactForm = document.getElementById("contact-form");
+      const submitBtn = document.getElementById("submit-btn");
+      const submissionToast = document.getElementById("submission-toast");
+      const initialSendIconHtml =
+        '<span>שלח פנייה</span> <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>';
+
+      const showToast = (message, isSuccess = true) => {
+        // עדכון תוכן ההודעה והצבע בהתאם להצלחה או שגיאה
+        const iconName = isSuccess ? "check-circle" : "alert-triangle";
+        const bgColor = isSuccess ? "bg-green-600" : "bg-red-600";
+
+        submissionToast.classList.remove("bg-green-600", "bg-red-600");
+        submissionToast.classList.add(bgColor);
+        submissionToast.innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6"></i> <span>${message}</span>`;
+        lucide.createIcons(); // יצירת האייקון החדש
+
+        // הצגת ההתראה
+        submissionToast.classList.remove(
+          "opacity-0",
+          "translate-y-4",
+          "pointer-events-none"
+        );
+
+        // הסתרת ההתראה לאחר 4 שניות
+        setTimeout(() => {
+          submissionToast.classList.add(
+            "opacity-0",
+            "translate-y-4",
+            "pointer-events-none"
+          );
+        }, 4000);
+      };
+
+      if (contactForm && submitBtn) {
+        contactForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formAction = contactForm.getAttribute("data-form-action");
+          const formData = new FormData(contactForm);
+
+          // שינוי כפתור למצב טעינה
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = `<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> <span>שולח...</span>`;
+          lucide.createIcons();
+
+          try {
+            // שליחת הנתונים באמצעות fetch (AJAX) ל-Web3Forms
+            const response = await fetch(formAction, {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json(); // Web3Forms תמיד מחזיר JSON
+
+            if (response.ok && result.success) {
+              // הודעת ההצלחה המבוקשת
+              showToast("ההודעה נשלחה בהצלחה! ניצור קשר בהקדם.");
+              contactForm.reset(); // ניקוי הטופס
+            } else {
+              // טיפול בשגיאה ספציפית מהשרת
+              const errorMessage =
+                result.message ||
+                "אירעה שגיאה בשליחה. ודא שכל השדות מולאו כהלכה.";
+              showToast(errorMessage, false);
+            }
+          } catch (error) {
+            // טיפול בשגיאות רשת (כמו חוסר חיבור)
+            console.error("Submission Error:", error);
+            showToast("אירעה שגיאת רשת. נסה שוב מאוחר יותר.", false);
+          } finally {
+            // החזרת הכפתור למצב רגיל
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = initialSendIconHtml;
+            lucide.createIcons();
+          }
+        });
+      }
     </script>
   </body>
 </html>

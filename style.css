@@ -1,0 +1,104 @@
+/* מעברים חלקים */
+body,
+div,
+section,
+p,
+h1,
+h2,
+h3,
+h4,
+span,
+i,
+button,
+nav,
+ul,
+li,
+a {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease, fill 0.3s ease, transform 0.3s ease;
+}
+
+/* Glassmorphism Defaults */
+.glass {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar Glass */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile Menu */
+#mobile-menu {
+  transform-origin: top;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.menu-hidden {
+  transform: scaleY(0);
+  opacity: 0;
+  pointer-events: none;
+}
+.menu-visible {
+  transform: scaleY(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Modal Styling */
+.modal-backdrop {
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* רכב משלוחים - הדמיית לוגו */
+.van-container {
+  position: relative;
+  overflow: hidden;
+}
+.van-logo-overlay {
+  position: absolute;
+  top: 45%;
+  left: 30%; /* מיקום מותאם לרכב פרטי */
+  width: 25%;
+  opacity: 0.9;
+  mix-blend-mode: multiply; /* משתלב עם הצללים של הרכב */
+  transform: rotate(-1deg); /* הטיה קלה בהתאם לזווית הרכב */
+}
+
+/* Fix for details/summary padding in RTL */
+details summary {
+  padding-right: 0.5rem;
+}
+
+/* Accessibility High Contrast */
+.high-contrast {
+  filter: grayscale(100%) invert(100%) hue-rotate(180deg);
+}
+
+/* Font Size Adjustments */
+body.a11y-text-md {
+  font-size: 1.125rem;
+}
+body.a11y-text-lg {
+  font-size: 1.25rem;
+}
+
+body.a11y-text-md p,
+body.a11y-text-md a,
+body.a11y-text-md span,
+body.a11y-text-md li {
+  font-size: 1.125rem !important;
+}
+body.a11y-text-lg p,
+body.a11y-text-lg a,
+body.a11y-text-lg span,
+body.a11y-text-lg li {
+  font-size: 1.25rem !important;
+}
